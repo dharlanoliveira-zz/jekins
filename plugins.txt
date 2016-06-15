@@ -1,0 +1,3 @@
+simple-theme-plugin 0.3
+git 2.4.4
+docker-slaves 0.5
