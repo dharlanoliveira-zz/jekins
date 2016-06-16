@@ -1,4 +1,3 @@
 FROM jenkinsci/jenkins
-COPY plugins.txt /plugins.txt
-RUN /usr/local/bin/plugins.sh /plugins.txt
+RUN install-plugins.sh git docker-slaves simple-theme-plugin
 COPY tcu-init.groovy /usr/share/jenkins/ref/init.groovy.d/
