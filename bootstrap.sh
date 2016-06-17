@@ -26,6 +26,3 @@ chmod +x /usr/bin/docker-compose
 
 echo "Adicionando usuário vagrant ao grupo docker"
 sudo usermod -aG docker vagrant
-
-echo "Criando diretório para servir como repositório do maven"
-mkdir /maven_repository

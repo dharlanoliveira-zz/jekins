@@ -1,16 +1,33 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "centos7.1"
-  config.vm.hostname = "jenkins.box"
-  config.vm.provision :shell, path: "bootstrap.sh"
-  config.vm.network "public_network"
-  config.vm.network "forwarded_port", guest: 8080, host: 8081
-  config.vm.synced_folder ".", "/jenkins", owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=775']
 
-  config.vm.provider "virtualbox" do |v|
-    v.name = "jenkins.box"
-    v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/projeto", "1"]
-    v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate//projeto", "1"]
-    v.memory = 3072
-    v.cpus = 2
+  config.vm.define "master" do |master|
+    master.vm.box = "master.jenkins"
+    master.vm.box = "centos7.1"
+    master.vm.hostname = "master.jenkins"
+    master.vm.provision :shell, path: "bootstrap.sh"
+    master.vm.network "private_network", ip: "192.168.0.10"
+    master.vm.network "forwarded_port", guest: 8080, host: 8080
+    master.vm.network "forwarded_port", guest: 8090, host: 8090
+    master.vm.synced_folder "./master/", "/jenkins", owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=775']
+    config.vm.provider "virtualbox" do |v|
+      v.memory = 3072
+      v.cpus = 2
+    end
   end
+
+  config.vm.define "slave" do |slave|
+    slave.vm.box = "slave.jenkins"
+    slave.vm.box = "centos7.1"
+    slave.vm.hostname = "slave.jenkins"
+    slave.vm.provision :shell, path: "bootstrap.sh"
+    slave.vm.network "private_network", ip: "192.168.0.20"
+    slave.vm.network "forwarded_port", guest: 50000, host: 50000
+    slave.vm.synced_folder "./slave", "/jenkins", owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=775,fmode=775']
+    config.vm.provider "virtualbox" do |v|
+      v.memory = 3072
+      v.cpus = 2
+    end
+  end
+
+
 end
