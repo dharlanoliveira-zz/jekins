@@ -34,4 +34,3 @@ def xmlStream = new ByteArrayInputStream( configXml.getBytes() )
 inst.createProjectFromXML(jobName, xmlStream)
 
 inst.save()
-inst.reload()
