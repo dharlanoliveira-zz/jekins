@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 echo "Instalando dependências"
+rm -fr /var/cache/yum/*
+yum clean all
+yum makecache
 yum update
 yum install -y curl
 yum install -y wget
